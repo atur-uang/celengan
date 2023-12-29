@@ -1,0 +1,62 @@
+name: Deploy to server
+run-name: Continuous deployment
+on:
+  push:
+    branches:
+      - main
+jobs:
+  single-deploy:
+    name: Deploy to server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set date variable
+        run: echo "FORMATTED_TIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+
+      - name: Unit test
+        run: go test ./...
+
+      - name: Build binary
+        run: go build -o celengan
+
+      - name: Copy app to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_KEY }}
+          source: "celengan,resources/**/*"
+          target: /var/www/celengan/app-${{ env.FORMATTED_TIME }}
+
+      - name: Restart service
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_KEY }}
+          script: |
+            cd /var/www/celengan/
+            unlink app
+            ln -s app-${{ env.FORMATTED_TIME }} app
+            sudo systemctl restart celengan
+            
+            directory_pattern="app-*"
+            directories=($(ls -d $directory_pattern | sort -t '-' -k 2 -n))
+            preserve_count=5
+            delete_count=$(( ${#directories[@]} - $preserve_count ))
+            if [ $delete_count -gt 0 ]; then
+                directories_to_delete=("${directories[@]:0:$delete_count}")
+                for dir in "${directories_to_delete[@]}"; do
+                    echo "Deleting: $dir"
+                    rm -r "$dir"
+                done
+            else
+                echo "No directories to delete."
+            fi

@@ -1,3 +1,6 @@
 celengan
 storage/logs/*
 .env
+node_modules/*
+package-lock.json
+gin-bin

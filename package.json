@@ -5,6 +5,6 @@
     "tailwindcss": "^3.4.1"
   },
   "scripts": {
-    "tailwind": "npx tailwindcss -i ./resources/assets/input.css -o ./resources/assets/celengan.css --watch"
+    "tailwind": "npx tailwindcss -i ./resources/assets/styles/input.css -o ./resources/assets/styles/celengan.css --watch"
   }
 }

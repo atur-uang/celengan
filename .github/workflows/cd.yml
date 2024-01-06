@@ -34,7 +34,7 @@ jobs:
       - name: Build CSS
         run: |
           npm install
-          npx tailwindcss -i ./resources/assets/input.css -o ./resources/assets/celengan.css --minify
+          npx tailwindcss -i ./resources/assets/styles/input.css -o ./resources/assets/styles/celengan.css --minify
 
       - name: Copy app to server
         uses: appleboy/scp-action@v0.1.7

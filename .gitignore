@@ -4,3 +4,4 @@ storage/logs/*
 node_modules/*
 package-lock.json
 gin-bin
+resources/assets/celengan.css

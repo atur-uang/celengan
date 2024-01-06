@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
+	"gitlab.com/go-box/pongo2gin/v6"
 	"gorm.io/gorm"
 	"io"
 	"log"
@@ -59,7 +60,12 @@ func loadStaticFiles(route *gin.Engine) {
 
 func loadViews(route *gin.Engine) {
 	// Load the go html view
-	route.LoadHTMLGlob("resources/views/**/*")
+	//route.LoadHTMLGlob("resources/views/**/*")
+	route.HTMLRender = pongo2gin.New(pongo2gin.RenderOptions{
+		TemplateDir: "resources/views",
+		TemplateSet: nil,
+		ContentType: "text/html; charset=utf-8",
+	})
 }
 
 func runServer(router *gin.Engine) {

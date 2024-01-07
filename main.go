@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/atur-uang/celengan/app"
+	"github.com/atur-uang/celengan/app/models"
 	"github.com/atur-uang/celengan/framework/config"
 	"github.com/gin-gonic/gin"
 	"github.com/iancoleman/strcase"
@@ -149,8 +150,8 @@ func setDatabaseConnection(config config.Config) {
 		panic("failed to connect database")
 	}
 
-	//err := DB.AutoMigrate(&models.User{})
-	err := autoMigrateAllModels(DB)
+	err := DB.AutoMigrate(&models.User{})
+	//err := autoMigrateAllModels(DB)
 	if err != nil {
 		return
 	}

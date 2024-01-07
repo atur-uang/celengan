@@ -1,4 +1,4 @@
-package framework
+package config
 
 import appConfig "github.com/atur-uang/celengan/config"
 

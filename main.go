@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/atur-uang/celengan/app"
 	"github.com/atur-uang/celengan/app/models"
-	"github.com/atur-uang/celengan/framework"
+	"github.com/atur-uang/celengan/framework/config"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
@@ -109,12 +109,11 @@ func runServer(router *gin.Engine) {
 
 func loadConfiguration() {
 
-	config := framework.Config{}
-
-	setDatabaseConnection(config)
+	c := config.Config{}
+	setDatabaseConnection(c)
 }
 
-func setDatabaseConnection(config framework.Config) {
+func setDatabaseConnection(config config.Config) {
 	var database *gorm.DB
 	var dbErr error
 

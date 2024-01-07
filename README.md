@@ -15,6 +15,7 @@ Take a look [this](https://github.com/go-nv/goenv/blob/master/INSTALL.md) to ins
 ```
 git clone git@github.com:atur-uang/celengan.git
 go mod tidy
+npm install
 ```
 
 ## Live reload
@@ -33,4 +34,10 @@ gin -a 8080 run main.go
 
 ```
 
-Then open browser http://localhost:3000.
+In separate terminal run
+
+```
+npm run tailwind
+```
+
+Then, open browser http://localhost:3000.

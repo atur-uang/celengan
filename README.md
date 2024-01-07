@@ -1,3 +1,5 @@
+[![Deploy to server](https://github.com/atur-uang/celengan/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/atur-uang/celengan/actions/workflows/cd.yml)
+
 # Celengan
 
 Simple project to save your money in Go.

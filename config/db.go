@@ -1,11 +1,17 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"github.com/atur-uang/celengan/framework"
+)
 
 func DB() map[string]any {
-	viper.SetDefault("DB_NAME", "celengan")
 
 	return map[string]any{
-		"name": viper.GetString("DB_NAME"),
+		"driver":   framework.EnvString("DB_DRIVER", "mysql"),
+		"host":     framework.EnvString("DB_HOST", "172.0.0.1"),
+		"port":     framework.EnvInt("DB_PORT", 5432),
+		"username": framework.EnvString("DB_USERNAME", "john"),
+		"password": framework.EnvString("DB_PASSWORD", "password"),
+		"name":     framework.EnvString("DB_NAME", "celengan"),
 	}
 }

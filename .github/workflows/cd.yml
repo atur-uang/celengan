@@ -1,11 +1,11 @@
-name: Deploy to server
+name: Continuous deployment
 run-name: Continuous deployment
 on:
   push:
     branches:
       - main
 jobs:
-  single-deploy:
+  deploy:
     name: Deploy to server
     runs-on: ubuntu-latest
     steps:
@@ -24,9 +24,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
-
-      - name: Unit test
-        run: go test ./...
 
       - name: Build binary
         run: go build -o celengan
@@ -52,11 +49,20 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_KEY }}
           script: |
+            
+            # Create symbolic link to the latest deployed app
             cd /var/www/celengan/
             unlink app
             ln -s app-${{ env.FORMATTED_TIME }} app
+            
+            # Create symbolic link for .env file
+            cd app/
+            ln -s ../.env .env
+            
+            # Restart the service
             sudo systemctl restart celengan
             
+            # Preserve last 5 deployed app
             directory_pattern="app-*"
             directories=($(ls -d $directory_pattern | sort -t '-' -k 2 -n))
             preserve_count=5

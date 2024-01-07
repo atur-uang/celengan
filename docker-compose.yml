@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: celengan
+      MYSQL_USER: bri
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - bridging_network
+
+#  sqlserver:
+#    image: mcr.microsoft.com/mssql/server:2022-latest
+#    environment:
+#      ACCEPT_EULA: Y
+#      SA_PASSWORD: password
+#      MSSQL_DATA_DIR: /var/opt/mssql/data
+#      MSSQL_PID: 'Developer'
+#      MSSQL_TCP_PORT: 1433
+#    ports:
+#      - "1433:1433"
+#    command: ["/opt/mssql/bin/sqlservr"]
+#    volumes:
+#      - ./data:/var/opt/mssql/data
+#      - ./log:/var/opt/mssql/log
+#      - ./secrets:/var/opt/mssql/secrets
+#    networks:
+#      - bridging_network
+
+networks:
+  bridging_network:
+    driver: bridge

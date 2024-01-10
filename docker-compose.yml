@@ -1,6 +1,26 @@
 version: '3.8'
 
 services:
+  gateway:
+    image: kong:3.5.0-ubuntu
+    volumes:
+      - ./kong.yml:/usr/local/kong/declarative/kong.yml
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stdout
+      - KONG_ADMIN_ERROR_LOG=/dev/stdout
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "127.0.0.1:8001:8001"
+      - "127.0.0.1:8444:8444"
+    networks:
+      - bridging_network
+
   mysql:
     image: mysql:8.2
     restart: always
@@ -13,24 +33,6 @@ services:
       - "3306:3306"
     networks:
       - bridging_network
-
-#  sqlserver:
-#    image: mcr.microsoft.com/mssql/server:2022-latest
-#    environment:
-#      ACCEPT_EULA: Y
-#      SA_PASSWORD: password
-#      MSSQL_DATA_DIR: /var/opt/mssql/data
-#      MSSQL_PID: 'Developer'
-#      MSSQL_TCP_PORT: 1433
-#    ports:
-#      - "1433:1433"
-#    command: ["/opt/mssql/bin/sqlservr"]
-#    volumes:
-#      - ./data:/var/opt/mssql/data
-#      - ./log:/var/opt/mssql/log
-#      - ./secrets:/var/opt/mssql/secrets
-#    networks:
-#      - bridging_network
 
 networks:
   bridging_network:

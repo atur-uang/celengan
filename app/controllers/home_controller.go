@@ -15,3 +15,9 @@ func (controller HomeController) Index(context *gin.Context) {
 		"name": "Dunia",
 	})
 }
+
+func (controller HomeController) Hello(context *gin.Context) {
+	context.JSON(http.StatusOK, map[string]string{
+		"hello": "world",
+	})
+}

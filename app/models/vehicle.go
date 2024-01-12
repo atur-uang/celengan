@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 type Vehicle struct {
 	gorm.Model
 
-	Name string `gorm:"uniqueIndex"`
+	Name string `gorm:"type:varchar(50);uniqueIndex"`
 }
 
 type VehicleAPI struct {

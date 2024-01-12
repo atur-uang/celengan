@@ -8,7 +8,7 @@ type Vehicle struct {
 	Name string `gorm:"type:varchar(50);uniqueIndex"`
 }
 
-type VehicleAPI struct {
-	ID   uint
-	Name string
+type VehicleResponse struct {
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
 }

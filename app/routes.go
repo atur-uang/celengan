@@ -13,8 +13,15 @@ func Routes(route *gin.Engine) *gin.Engine {
 	route.POST("transaction", controllers.TransactionController{}.Deposit)
 	route.DELETE("transaction", controllers.TransactionController{}.Withdrawal)
 
-	vehicles := route.Group("vehicles")
-	vehicles.GET("/", controllers.VehicleController{}.Index)
+	//vehicles := route.Group("vehicles")
+	//vehicles.GET("/", (&controllers.VehicleController{}).Index)
+	//vehicles.POST("/", (&controllers.VehicleController{}).Store)
+
+	route.GET("vehicles", controllers.VehicleController{}.Index)
+	route.POST("vehicles", controllers.VehicleController{}.Store)
+	route.GET("vehicles/:id", controllers.VehicleController{}.Detail)
+	route.PUT("vehicles/:id", controllers.VehicleController{}.Update)
+	route.DELETE("vehicles/:id", controllers.VehicleController{}.Delete)
 
 	return route
 }

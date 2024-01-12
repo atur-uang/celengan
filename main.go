@@ -47,7 +47,15 @@ func loadEnvironmentVariable() {
 func setupLogger() {
 	// Set the log to the file
 	gin.ForceConsoleColor()
-	f, _ := os.Create("storage/logs/gin.log")
+	logPath := "/var/log/celengan/gin.log"
+	var f *os.File
+
+	if _, err := os.Stat(logPath); err == nil {
+		f, _ = os.Open(logPath)
+	} else {
+		f, _ = os.Create(logPath)
+	}
+
 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 }
 

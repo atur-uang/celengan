@@ -6,6 +6,7 @@ import (
 	"github.com/atur-uang/celengan/app"
 	"github.com/atur-uang/celengan/framework"
 	"github.com/atur-uang/celengan/framework/config"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
@@ -17,23 +18,16 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-	// "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
-	"github.com/gin-contrib/cors"
 )
 
 func main() {
 	application := gin.Default()
 
 	// Middleware
-	application.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://celengan.online", "https://www.celengan.online"},
-		AllowMethods:     []string{"PUT", "PATCH", "GET", "HEAD", "DELETE"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
-
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:3000", "https://celengan.online", "https://www.celengan.online"}
+	corsConfig.AllowCredentials = true
+	application.Use(cors.New(corsConfig))
 	router := app.Routes(application)
 
 	setupLogger()

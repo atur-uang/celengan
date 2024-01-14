@@ -18,10 +18,22 @@ import (
 	"syscall"
 	"time"
 	// "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
 	application := gin.Default()
+
+	// Middleware
+	application.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"https://celengan.online", "https://www.celengan.online"},
+		AllowMethods:     []string{"PUT", "PATCH", "GET", "HEAD", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	router := app.Routes(application)
 
 	setupLogger()
